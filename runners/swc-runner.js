@@ -439,13 +439,9 @@ ${code}
       </html>
     `;
 
-    // Create blob URL for iframe src
-    const blob = new Blob([iframeHTML], { type: "text/html;charset=utf-8" });
-    const blobUrl = URL.createObjectURL(blob);
-
     // Create iframe for sandboxed execution
     const iframe = document.createElement("iframe");
-    iframe.src = blobUrl;
+    iframe.srcdoc = iframeHTML;
     iframe.style.border = "none";
     iframe.style.width = "100%";
     iframe.style.height = "100%";
