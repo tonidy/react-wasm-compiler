@@ -60,6 +60,7 @@ function serveRawSrc() {
 }
 
 export default defineConfig({
+  base: "/react-wasm-compiler/",
   plugins: [skipSrcAnalysis(), serveRawSrc()],
   server: {
     port: 3000,
