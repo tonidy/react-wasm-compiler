@@ -408,22 +408,18 @@ function getThemeColors() {
  */
 function updateSyntaxHighlight() {
   const code = codeEditor.value;
-  const language = currentFile.endsWith('.js') ? 'js' : 'ts';
-  const highlightElement = window.SpeedHighlight?.highlightElement;
+  const language = currentFile.endsWith('.js') ? 'js' : 'typescript';
 
-  // If Speed-Highlight isn't loaded yet, just show plaintext
-  if (!highlightElement) {
+  // If highlight.js isn't loaded yet, just show plaintext
+  if (!window.hljs) {
     codeHighlight.textContent = code;
     return;
   }
 
   try {
-    // Set the text content and language class
-    codeHighlight.textContent = code;
-    codeHighlight.className = `shj-lang-${language}`;
-
-    // Highlight the element
-    highlightElement(codeHighlight, language);
+    // Use highlight.js to highlight the code
+    const highlighted = window.hljs.highlight(code, { language }).value;
+    codeHighlight.innerHTML = highlighted;
   } catch (err) {
     // Fallback if highlighting fails
     console.warn("[playground] Syntax highlighting error:", err);
