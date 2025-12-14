@@ -6,11 +6,11 @@
 import { createRunner } from "./wasm-runner.js";
 import { fetchSourceFile } from "./file-loader.js";
 
-// Dynamic import for Speed-Highlight to avoid Vite resolution issues
-let highlightCode = null;
-import("@speed-highlight/core").then(module => {
-  highlightCode = module.highlightCode;
-});
+// Get highlightCode from Speed-Highlight UMD global
+const getHighlightCode = () => {
+  // Speed-Highlight UMD exposes as window.SpeedHighlight.highlightCode
+  return window.SpeedHighlight?.highlightCode || null;
+};
 
 // DOM Elements
 const codeEditor = document.getElementById("code-editor");
@@ -415,6 +415,7 @@ function getThemeColors() {
 function updateSyntaxHighlight() {
   const code = codeEditor.value;
   const language = currentFile.endsWith('.js') ? 'js' : 'ts';
+  const highlightCode = getHighlightCode();
 
   // If Speed-Highlight isn't loaded yet, just show plaintext
   if (!highlightCode) {
