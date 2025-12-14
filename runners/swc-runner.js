@@ -411,7 +411,11 @@ ${code}
         </script>
         <style>
           * { box-sizing: border-box; margin: 0; padding: 0; }
-          body { font-family: system-ui, -apple-system, sans-serif; }
+          body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #000000;
+            color: #fafafa;
+          }
         </style>
       </head>
       <body>

@@ -20,100 +20,289 @@
         <style>
             * {
                 box-sizing: border-box;
-            }
-            body {
-                font-family:
-                    system-ui,
-                    -apple-system,
-                    sans-serif;
                 margin: 0;
-                padding: 20px;
-                background: #f9fafb;
+                padding: 0;
             }
-            .container {
-                max-width: 900px;
-                margin: 0 auto;
+
+            body {
+                font-family: system-ui, -apple-system, sans-serif;
+                background: #000000;
+                height: 100vh;
+                overflow: hidden;
+                color: #fafafa;
             }
-            .header {
+
+            .ide-container {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            .ide-header {
+                background: #0a0a0a;
+                padding: 16px 24px;
+                border-bottom: 1px solid #27272a;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 24px;
-                padding-bottom: 16px;
-                border-bottom: 1px solid #e5e7eb;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             }
+
+            .ide-header h1 {
+                font-size: 28px;
+                color: #fafafa;
+                font-weight: 700;
+            }
+
             .compiler-selector {
                 display: flex;
-                gap: 8px;
+                gap: 12px;
                 align-items: center;
             }
+
             .compiler-selector label {
-                font-weight: 500;
-                color: #374151;
+                font-weight: 600;
+                color: #e4e4e7;
             }
+
             .compiler-selector select {
-                padding: 8px 12px;
-                border: 1px solid #d1d5db;
+                padding: 8px 14px;
+                border: 1px solid #27272a;
                 border-radius: 6px;
                 font-size: 14px;
-                background: white;
+                background: #18181b;
+                color: #fafafa;
                 cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
             }
-            #status {
-                padding: 12px 16px;
-                margin-bottom: 16px;
-                border-radius: 6px;
+
+            .compiler-selector select:hover {
+                border-color: #3f3f46;
+                background: #27272a;
+            }
+
+            .ide-main {
+                display: grid;
+                grid-template-columns: 250px 1fr 1fr;
+                gap: 8px;
+                padding: 8px;
+                flex: 1;
+                overflow: hidden;
+            }
+
+            /* File Explorer */
+            .file-explorer {
+                background: #09090b;
+                border-radius: 8px;
+                overflow-y: auto;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                padding: 12px;
+                border: 1px solid #27272a;
+            }
+
+            .file-explorer-title {
+                font-weight: 700;
+                color: #a1a1a6;
+                font-size: 12px;
+                text-transform: uppercase;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #27272a;
+            }
+
+            .file-tree {
+                font-size: 13px;
+                font-family: system-ui, -apple-system, sans-serif;
+                letter-spacing: 0.3px;
+            }
+
+            .file-item {
+                padding: 8px 8px;
+                margin: 3px 0;
+                cursor: pointer;
+                border-radius: 4px;
+                color: #d4d4d8;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
                 font-weight: 500;
             }
-            #status.loading {
-                background: #fef3c7;
-                color: #92400e;
-                border: 1px solid #fcd34d;
+
+            .file-item:hover {
+                background: #27272a;
             }
-            #status.success {
-                background: #d1fae5;
-                color: #065f46;
-                border: 1px solid #6ee7b7;
+
+            .file-item.file {
+                color: #a1a1a6;
+                padding-left: 24px;
             }
-            #status.error {
-                background: #fee2e2;
-                color: #991b1b;
-                border: 1px solid #fca5a5;
+
+            .file-item.file:hover {
+                color: #e4e4e7;
+                background: #27272a;
             }
-            .capabilities {
-                padding: 8px 16px;
-                margin-bottom: 16px;
-                background: white;
-                border-radius: 6px;
-                border: 1px solid #e5e7eb;
+
+            .file-item.active {
+                background: #3f3f46;
+                color: #fafafa;
+                font-weight: 600;
+            }
+
+            .file-item.directory {
+                cursor: pointer;
+                user-select: none;
+                color: #e4e4e7;
+                font-weight: 600;
+            }
+
+            .file-item.directory:hover {
+                background: #27272a;
+            }
+
+            .file-children {
+                margin-left: 16px;
+            }
+
+            .file-children.collapsed {
+                display: none;
+            }
+
+            /* Code Editor */
+            .code-editor {
+                background: #09090b;
+                border-radius: 8px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                border: 1px solid #27272a;
+            }
+
+            .editor-header {
+                background: #0a0a0a;
+                padding: 8px 12px;
+                border-bottom: 1px solid #27272a;
                 font-size: 12px;
-                color: #6b7280;
+                font-weight: 600;
+                color: #a1a1a6;
+                text-transform: uppercase;
             }
-            #root {
-                background: white;
-                border: 1px solid #e5e7eb;
-                padding: 24px;
-                border-radius: 8px;
-                min-height: 200px;
-            }
-            .error-box {
-                color: #dc2626;
-                background: #fef2f2;
+
+            .editor-textarea {
+                flex: 1;
                 padding: 16px;
-                border-radius: 8px;
-                border: 1px solid #fecaca;
-                font-family: "Monaco", monospace;
+                border: none;
+                outline: none;
+                font-family: 'Monaco', 'Courier New', monospace;
                 font-size: 13px;
-                overflow-x: auto;
-                white-space: pre-wrap;
-                word-break: break-word;
+                line-height: 1.6;
+                color: #e4e4e7;
+                background: #09090b;
+                resize: none;
+                overflow-y: auto;
+                caret-color: #e4e4e7;
+            }
+
+            .editor-textarea::selection {
+                background: #3f3f46;
+            }
+
+            /* Live Preview */
+            .live-preview {
+                background: #09090b;
+                border-radius: 8px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                border: 1px solid #27272a;
+            }
+
+            .preview-header {
+                background: #0a0a0a;
+                padding: 8px 12px;
+                border-bottom: 1px solid #27272a;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .preview-title {
+                font-size: 12px;
+                font-weight: 600;
+                color: #a1a1a6;
+                text-transform: uppercase;
+            }
+
+            .preview-status {
+                font-size: 11px;
+                padding: 4px 10px;
+                border-radius: 4px;
+                background: #27272a;
+                color: #a1a1a6;
+                font-weight: 600;
+            }
+
+            .preview-status.loading {
+                background: #3f3f46;
+                color: #fafafa;
+            }
+
+            .preview-status.success {
+                background: #3f3f46;
+                color: #86efac;
+            }
+
+            .preview-status.error {
+                background: #3f3f46;
+                color: #ff6b6b;
+            }
+
+            .preview-container {
+                flex: 1;
+                overflow: hidden;
+                background: #fafafa;
+            }
+
+            #root {
+                width: 100%;
+                height: 100%;
+            }
+
+            #root iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+
+            /* Scrollbar styling */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #09090b;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #27272a;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #3f3f46;
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="header">
-                <h1 style="margin: 0; color: #111827">ReactCompile</h1>
+        <div class="ide-container">
+            <!-- Header -->
+            <div class="ide-header">
+                <h1>ReactCompile</h1>
                 <div class="compiler-selector">
                     <label for="compiler-select">Compiler:</label>
                     <select id="compiler-select">
@@ -123,13 +312,37 @@
                 </div>
             </div>
 
-            <div id="status" class="loading">Initializing...</div>
-            <div
-                id="capabilities"
-                class="capabilities"
-                style="display: none"
-            ></div>
-            <div id="root"></div>
+            <!-- Main IDE Area -->
+            <div class="ide-main">
+                <!-- File Explorer -->
+                <div class="file-explorer">
+                    <div class="file-explorer-title">File Explorer</div>
+                    <div class="file-tree" id="file-tree"></div>
+                </div>
+
+                <!-- Code Editor -->
+                <div class="code-editor">
+                    <div class="editor-header" id="editor-header">entry.tsx</div>
+                    <textarea
+                        id="code-editor"
+                        class="editor-textarea"
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+
+                <!-- Live Preview -->
+                <div class="live-preview">
+                    <div class="preview-header">
+                        <div class="preview-title">Live Preview</div>
+                        <div id="preview-status" class="preview-status loading">
+                            Initializing...
+                        </div>
+                    </div>
+                    <div class="preview-container">
+                        <div id="root"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script type="module" src="./playground.js"></script>
