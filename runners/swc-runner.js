@@ -313,6 +313,14 @@ ${code}
       entryPoint: entryKey
     } = await this.compile(options);
 
+    const themeColors = options.themeColors || {
+      bg: '#000000',
+      text: '#fafafa',
+      muted: '#e4e4e7',
+      code: '#a1a1a6',
+      codeBg: '#18181b'
+    };
+
     // Get or create root container
     const rootEl = document.getElementById("root");
     if (!rootEl) {
@@ -349,6 +357,10 @@ ${code}
       bundledCodeLines.push("};");
       bundledCodeLines.push("");
     }
+
+    // Set theme on window
+    bundledCodeLines.push("");
+    bundledCodeLines.push(`window.__THEME__ = ${JSON.stringify(themeColors)};`);
 
     // Add external package preloader
     bundledCodeLines.push("");

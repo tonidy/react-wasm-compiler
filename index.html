@@ -82,6 +82,27 @@
                 background: #27272a;
             }
 
+            .theme-toggle {
+                padding: 8px 12px;
+                border: 1px solid #27272a;
+                border-radius: 6px;
+                background: #18181b;
+                color: #fafafa;
+                cursor: pointer;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                min-width: 44px;
+                height: 40px;
+            }
+
+            .theme-toggle:hover {
+                border-color: #3f3f46;
+                background: #27272a;
+            }
+
             .ide-main {
                 display: grid;
                 grid-template-columns: 250px 1fr 1fr;
@@ -296,6 +317,138 @@
             ::-webkit-scrollbar-thumb:hover {
                 background: #3f3f46;
             }
+
+            /* Light Theme */
+            body.light-theme {
+                background: #ffffff;
+                color: #1f2937;
+            }
+
+            body.light-theme .ide-header {
+                background: #f9fafb;
+                border-bottom-color: #e5e7eb;
+            }
+
+            body.light-theme .ide-header h1 {
+                color: #1f2937;
+            }
+
+            body.light-theme .compiler-selector label {
+                color: #374151;
+            }
+
+            body.light-theme .compiler-selector select {
+                background: #ffffff;
+                border-color: #d1d5db;
+                color: #1f2937;
+            }
+
+            body.light-theme .compiler-selector select:hover {
+                border-color: #9ca3af;
+                background: #f3f4f6;
+            }
+
+            body.light-theme .theme-toggle {
+                background: #ffffff;
+                border-color: #d1d5db;
+                color: #1f2937;
+            }
+
+            body.light-theme .theme-toggle:hover {
+                border-color: #9ca3af;
+                background: #f3f4f6;
+            }
+
+            body.light-theme .file-explorer {
+                background: #ffffff;
+                border-color: #e5e7eb;
+            }
+
+            body.light-theme .file-explorer-title {
+                color: #6b7280;
+                border-bottom-color: #e5e7eb;
+            }
+
+            body.light-theme .file-item {
+                color: #374151;
+            }
+
+            body.light-theme .file-item:hover {
+                background: #f3f4f6;
+            }
+
+            body.light-theme .file-item.file {
+                color: #6b7280;
+            }
+
+            body.light-theme .file-item.file:hover {
+                color: #1f2937;
+            }
+
+            body.light-theme .file-item.active {
+                background: #dbeafe;
+                color: #0c4a6e;
+            }
+
+            body.light-theme .file-item.directory {
+                color: #1f2937;
+            }
+
+            body.light-theme .file-item.directory:hover {
+                background: #f3f4f6;
+            }
+
+            body.light-theme .code-editor {
+                background: #ffffff;
+                border-color: #e5e7eb;
+            }
+
+            body.light-theme .editor-header {
+                background: #f9fafb;
+                border-bottom-color: #e5e7eb;
+                color: #6b7280;
+            }
+
+            body.light-theme .editor-textarea {
+                background: #ffffff;
+                color: #1f2937;
+                caret-color: #1f2937;
+            }
+
+            body.light-theme .editor-textarea::selection {
+                background: #bfdbfe;
+            }
+
+            body.light-theme .live-preview {
+                background: #ffffff;
+                border-color: #e5e7eb;
+            }
+
+            body.light-theme .preview-header {
+                background: #f9fafb;
+                border-bottom-color: #e5e7eb;
+            }
+
+            body.light-theme .preview-title {
+                color: #6b7280;
+            }
+
+            body.light-theme .preview-status {
+                background: #f3f4f6;
+                color: #4b5563;
+            }
+
+            body.light-theme ::-webkit-scrollbar-track {
+                background: #f9fafb;
+            }
+
+            body.light-theme ::-webkit-scrollbar-thumb {
+                background: #d1d5db;
+            }
+
+            body.light-theme ::-webkit-scrollbar-thumb:hover {
+                background: #9ca3af;
+            }
         </style>
     </head>
     <body>
@@ -309,6 +462,9 @@
                         <option value="esbuild">esbuild wasm</option>
                         <option value="swc">SWC wasm web</option>
                     </select>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
+                        🌙
+                    </button>
                 </div>
             </div>
 

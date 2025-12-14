@@ -222,6 +222,13 @@ export class EsbuildRunner extends WasmRunner {
    */
   async compileAndRun(options = {}) {
     const { code } = await this.compile(options);
+    const themeColors = options.themeColors || {
+      bg: '#000000',
+      text: '#fafafa',
+      muted: '#e4e4e7',
+      code: '#a1a1a6',
+      codeBg: '#18181b'
+    };
 
     // Get or create root container
     const rootEl = document.getElementById("root");
@@ -260,6 +267,9 @@ export class EsbuildRunner extends WasmRunner {
       </head>
       <body>
         <div id="root"></div>
+        <script>
+          window.__THEME__ = ${JSON.stringify(themeColors)};
+        </script>
         <script type="module">
           ${code}
         </script>
