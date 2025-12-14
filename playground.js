@@ -5,7 +5,12 @@
 
 import { createRunner } from "./wasm-runner.js";
 import { fetchSourceFile } from "./file-loader.js";
-import { highlightCode } from "@speed-highlight/core";
+
+// Dynamic import for Speed-Highlight to avoid Vite resolution issues
+let highlightCode = null;
+import("@speed-highlight/core").then(module => {
+  highlightCode = module.highlightCode;
+});
 
 // DOM Elements
 const codeEditor = document.getElementById("code-editor");
@@ -411,11 +416,18 @@ function updateSyntaxHighlight() {
   const code = codeEditor.value;
   const language = currentFile.endsWith('.js') ? 'js' : 'ts';
 
+  // If Speed-Highlight isn't loaded yet, just show plaintext
+  if (!highlightCode) {
+    codeHighlight.textContent = code;
+    return;
+  }
+
   try {
     const highlighted = highlightCode(code, language);
     codeHighlight.innerHTML = highlighted;
   } catch (err) {
     // Fallback if highlighting fails
+    console.warn("[playground] Syntax highlighting error:", err);
     codeHighlight.textContent = code;
   }
 }
